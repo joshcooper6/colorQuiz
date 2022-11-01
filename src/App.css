@@ -8,8 +8,20 @@
 }
 
 .trans {
-  transition: 500ms ease;
+  transition: 100ms ease;
 }
+
+.fadeAway {
+  animation: fadeAway 1000ms linear forwards;
+}
+
+@keyframes fadeAway {
+  0% {
+    top: -1000px;
+  } 100% {
+    top: 0px;
+  }
+};
 
 @tailwind base;
 @tailwind components;

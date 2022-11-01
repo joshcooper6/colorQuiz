@@ -25,14 +25,19 @@ function App() {
   let shuffled = shuffle(options);
 
   const hc = (e) => {
-    if (currentColor != e.target.value) { return setMessage('Wrong Answer... try again!'); }
+    if (currentColor != e.target.value) { 
+      setMessage('Not quite... try again!'); 
+      setTimeout(() => {setMessage('')}, 1000) 
+    } else {
+      party.confetti(e.target);
+      setMessage('');
+      setScore(prev => prev + 1);
+      setCorrectColors(prev => [...prev, currentColor]);
+      setCurrentColor(getRC());
+      setOtherColors([getRC(), getRC()]);
+    }
 
-    party.confetti(e.target);
-    setMessage('');
-    setScore(prev => prev + 1);
-    setCorrectColors(prev => [...prev, currentColor]);
-    setCurrentColor(getRC());
-    setOtherColors([getRC(), getRC()]);
+
   };
 
   const title = () => {
@@ -50,26 +55,29 @@ function App() {
 
   return (
     <Container bg={currentColor} className="bg-[lightblue] flex flex-col min-h-screen justify-center items-center">
-      <div className={`w-11/12 z-0 min-h-[500px] ${menu && 'opacity-10'} trans max-w-lg rounded-xl drop-shadow-2xl bg-white text-center flex flex-col justify-center items-center`}>
-        
-          <div className={`flex flex-col mb-10 mt-10 w-inherit`}>
 
+      <div className={`fixed p-4 trans drop-shadow-xl bg-white w-screen ${message.length > 0 ? 'top-0' : 'top-[-1000px]'}`}>
+            <h2 className='font-black text-center text-2xl tracking-tight'>{message}</h2>
+      </div>
+      
+      <div className={`w-11/12 z-0 min-h-[500px] ${menu && 'opacity-10'} trans max-w-lg rounded-xl drop-shadow-2xl bg-white text-center flex flex-col justify-center items-center`}>
+
+          <div className={`flex flex-col mb-10 mt-10 w-inherit`}>
               <h1 className='pb-4 font-black text-6xl'>{title()}</h1>
               <Box onClick={(e) => party.confetti(e.target)} bg={currentColor} children={score} className={`w-full flex flex-col justify-center items-center text-8xl font-thin rounded-md h-[200px]`} />
               <div className='flex gap-2 w-full justify-center items-center'>
                   {shuffled.map((color) => {
-                  return <button onClick={hc} value={color} children={color}
-                    className={'p-4 bg-gray-200 hover:scale-110 trans border mt-2 w-1/3 rounded-md uppercase text-xl font-medium tracking-wide'}
-                  />
+                    return <button onClick={hc} value={color} children={color}
+                      className={'p-4 bg-gray-200 hover:scale-110 trans border mt-2 w-1/3 rounded-md uppercase text-xl font-medium tracking-wide'}
+                    />
                   })}
               </div>
-              <p className='m-4 font-black uppercase text-2xl' children={message} />
-              <button onClick={() => {setMenu(!menu);}} className={`uppercase trans tracking-widest opacity-50 hover:scale-110 hover:font-black hover:opacity-100`} children={'Show Correct Guesses'} />
+              <button onClick={() => {setMenu(!menu);}} className={`uppercase trans tracking-widest opacity-50 hover:scale-110 hover:font-black hover:opacity-100 mt-10`} children={'Show Correct Guesses'} />
           </div>
 
       </div>
 
-      <div className={`${!menu && 'left-[-1000px]'} trans fixed flex flex-col top-0 left-0 h-screen w-[400px] drop-shadow-2xl z-20 bg-white`}>
+      <div className={`${!menu ? 'left-[-1000px]' : 'left-0'} trans fixed flex flex-col top-0 h-screen w-[400px] drop-shadow-2xl z-20 bg-white`}>
             
             <button onClick={() => {setMenu(!menu)}} className='text-4xl font-black text-right m-5 mb-4' children={'X'} />
 
@@ -86,7 +94,7 @@ function App() {
       </div>
 
       <div className='fixed bottom-0 p-10 text-4xl text-center uppercase tracking-widest font-black hover:opacity-100 hover:cursor-pointer opacity-0 trans'>
-          Designed by Joshua Cooper
+          <h2>Designed by Joshua Cooper</h2>
       </div>
 
     </Container>
