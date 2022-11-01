@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+.trans {
+  transition: 500ms ease;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
