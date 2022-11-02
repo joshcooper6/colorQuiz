@@ -93,7 +93,7 @@ function App() {
 
       </div>
 
-      <div className='fixed bottom-0 p-10 text-4xl text-center uppercase tracking-widest font-black hover:opacity-100 hover:cursor-pointer opacity-0 trans'>
+      <div className='fixed bottom-0 p-10 text-4xl text-center uppercase tracking-widest font-black hover:lg:opacity-100 hover:cursor-pointer opacity-0 trans'>
           <h2>Designed by Joshua Cooper</h2>
       </div>
 
