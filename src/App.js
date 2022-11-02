@@ -26,8 +26,9 @@ function App() {
 
   const hc = (e) => {
     if (currentColor != e.target.value) { 
-      setMessage('Not quite... try again!'); 
-      setTimeout(() => {setMessage('')}, 1000) 
+      // setMessage('Not quite... try again!'); 
+      // setTimeout(() => {setMessage('')}, 1000);
+      return;
     } else {
       party.confetti(e.target);
       setMessage('');
@@ -36,8 +37,6 @@ function App() {
       setCurrentColor(getRC());
       setOtherColors([getRC(), getRC()]);
     }
-
-
   };
 
   const title = () => {
@@ -51,51 +50,76 @@ function App() {
     return array;
   };
 
+  const buttons = shuffled.map((color) => {
+    return <button onClick={hc} value={color} children={color}
+      className={'p-4 bg-gray-200 rounded-tl-none rounded-tr-none hover:scale-110 trans border mt-2 w-1/3 rounded-xl uppercase text-xl font-medium tracking-wide'}
+    /> });
+
   console.log(`Since you were going to find out anyways, the answer is ${currentColor}.`);
 
   return (
-    <Container bg={currentColor} className="bg-[lightblue] flex flex-col min-h-screen justify-center items-center">
+    <Container bg={currentColor} className="flex flex-col min-h-screen justify-center items-center">
 
-      <div className={`fixed p-4 trans drop-shadow-xl bg-white w-screen ${message.length > 0 ? 'top-0' : 'top-[-1000px]'}`}>
-            <h2 className='font-black text-center text-2xl tracking-tight'>{message}</h2>
+      <div className={`fixed p-4 trans drop-shadow-xl z-0 bg-white w-screen ${message.length > 0 ? 'top-0' : 'top-[-1000px]'}`}>
+            <h2 
+              className='font-black text-center text-2xl tracking-tight'
+              children={message}
+            />
       </div>
       
-      <div className={`w-11/12 z-0 min-h-[500px] ${menu && 'opacity-10'} trans max-w-lg rounded-xl drop-shadow-2xl bg-white text-center flex flex-col justify-center items-center`}>
+      <div className={`w-11/12 z-0 min-h-[500px] ${menu && 'opacity-10'} trans max-w-lg rounded-2xl drop-shadow-2xl bg-white text-center flex flex-col justify-center items-center`}>
 
-          <div className={`flex flex-col mb-10 mt-10 w-inherit`}>
-              <h1 className='pb-4 font-black text-6xl'>{title()}</h1>
-              <Box onClick={(e) => party.confetti(e.target)} bg={currentColor} children={score} className={`w-full flex flex-col justify-center items-center text-8xl font-thin rounded-md h-[200px]`} />
-              <div className='flex gap-2 w-full justify-center items-center'>
-                  {shuffled.map((color) => {
-                    return <button onClick={hc} value={color} children={color}
-                      className={'p-4 bg-gray-200 hover:scale-110 trans border mt-2 w-1/3 rounded-md uppercase text-xl font-medium tracking-wide'}
-                    />
-                  })}
-              </div>
-              <button onClick={() => {setMenu(!menu);}} className={`uppercase trans tracking-widest opacity-50 hover:scale-110 hover:font-black hover:opacity-100 mt-10`} children={'Show Correct Guesses'} />
+          <div className={`flex flex-col mb-10 mt-10 w-inherit z-10`}>
+              <h1 
+                className='pb-4 font-black text-6xl'
+                children={title()}
+              />
+              <Box 
+                onClick={(e) => party.confetti(e.target)} 
+                bg={currentColor} 
+                children={score} 
+                className={`w-full flex flex-col justify-center items-center text-8xl font-thin rounded-bl-none rounded-br-none rounded-2xl h-[200px]`} 
+              />
+              <div className='flex gap-2 w-full justify-center items-center'
+                children={buttons}
+              />
+              <button 
+                onClick={() => {setMenu(!menu);}} 
+                className={`uppercase trans tracking-widest opacity-50 hover:scale-110 hover:font-black hover:opacity-100 mt-10`} 
+                children={'Show Correct Guesses'} 
+              />
           </div>
 
       </div>
 
       <div className={`${!menu ? 'left-[-1000px]' : 'left-0'} trans fixed flex flex-col top-0 h-screen w-[400px] drop-shadow-2xl z-20 bg-white`}>
             
-            <button onClick={() => {setMenu(!menu)}} className='text-4xl font-black text-right m-5 mb-4' children={'X'} />
+            <button 
+              onClick={() => { setMenu(!menu) }} 
+              className='text-4xl font-black text-right m-5 mb-4' 
+              children={'X'} 
+            />
 
             <div className='w-10/12 self-center flex flex-col-reverse gap-2'>
               
                 {correctColors.length > 0 ? correctColors.map(color => {
-                  return <Box className='rounded-xl uppercase font-black w-[full] h-[50px] flex flex-col items-center justify-center' bg={color}>{color}</Box>
-                }) : <h1 className='text-xl text-center font-black'>You haven't guessed any correctly yet! Keep trying...</h1>}
+                  return <Box className='rounded-xl uppercase font-black w-[full] h-[50px] flex flex-col items-center justify-center' bg={color} children={color} />
+                }) : <h1 className='text-xl text-center font-black' children={`You haven't guessed any correctly yet! Keep trying..`} />}
 
-                <button onClick={() => {if(!window.confirm('Clear game?')) return; setMenu(false); setScore(0); setCorrectColors([]);}} className={`uppercase p-6 hover:text-red-500 trans tracking-widest opacity-50 hover:scale-110 hover:font-black hover:opacity-100`} children={'Reset'} />
+                <button 
+                  onClick={() => {if(!window.confirm('Clear game?')) return; setMenu(false); setScore(0); setCorrectColors([]);}} 
+                  className={`uppercase p-6 hover:text-red-500 trans tracking-widest opacity-50 hover:scale-110 hover:font-black hover:opacity-100`} 
+                  children={'Reset'} 
+                />
 
             </div>
 
       </div>
 
-      <div className='fixed bottom-0 p-10 text-4xl text-center uppercase tracking-widest font-black hover:lg:opacity-100 hover:cursor-pointer opacity-0 trans'>
-          <h2>Designed by Joshua Cooper</h2>
-      </div>
+      <div 
+        children={<h2 children={'Designed by Joshua Cooper'} />} 
+        className='hidden lg:block fixed bottom-0 p-10 text-4xl text-center uppercase tracking-widest font-black hover:lg:opacity-100 hover:cursor-pointer opacity-0 trans' 
+      />
 
     </Container>
   );
